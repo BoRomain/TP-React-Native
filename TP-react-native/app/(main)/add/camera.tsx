@@ -1,4 +1,6 @@
+import Food from "@/class/Food";
 import Button from "@/components/Button";
+import { useMeal } from "@/contexts/MealContext";
 import mainStyles from "@/styles/main";
 import {
   BarcodeScanningResult,
@@ -7,12 +9,15 @@ import {
   useCameraPermissions,
 } from "expo-camera";
 import { useRouter } from "expo-router";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 export default function Camera() {
   const router = useRouter();
 
+  const { addFood } = useMeal();
+
+  const isScanning = useRef(false);
   const [facing, setFacing] = useState<CameraType>("back");
   const [permission, requestPermission] = useCameraPermissions();
 
@@ -20,7 +25,24 @@ export default function Camera() {
     const response = await fetch(
       "https://world.openfoodfacts.net/api/v2/product/" + data + ".json",
     );
-    router.replace("/(main)/add");
+
+    if (response.ok && isScanning.current === false) {
+      isScanning.current = true;
+      const data = await response.json();
+      const food: Food = {
+        id: new Date().getTime().toString(),
+        name: data.product.product_name,
+        brand: data.product.brands,
+        image_url: data.product.image_small_url,
+        nutriscore: data.product.nutriscore_grade,
+        calories: data.product.nutriments?.energy_kcal_100g,
+        proteins: data.product.nutriments?.proteins_100g,
+        carbs: data.product.nutriments?.carbohydrates_100g,
+        fats: data.product.nutriments?.fat_100g,
+      };
+      addFood(food);
+      router.replace("/(main)/add");
+    }
   }
 
   if (!permission) {

@@ -9,7 +9,7 @@ export default class Food {
   carbs: number;
   fats: number;
   constructor() {
-    this.id = "";
+    this.id = new Date().getTime().toString();
     this.name = "";
     this.brand = "";
     this.image_url = "";

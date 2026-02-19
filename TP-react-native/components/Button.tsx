@@ -18,7 +18,9 @@ interface CustomButtonProps extends TouchableOpacityProps {
   iconColor?: string;
   iconPosition?: "left" | "right";
   buttonStyle?: ViewStyle;
+  backgroundColor?: string;
   textStyle?: TextStyle;
+  rounded?: boolean;
 }
 
 const Button: React.FC<CustomButtonProps> = ({
@@ -28,11 +30,23 @@ const Button: React.FC<CustomButtonProps> = ({
   iconColor = "white",
   iconPosition = "left",
   buttonStyle,
+  backgroundColor = "#007AFF",
   textStyle,
+  rounded = false,
   ...props
 }) => {
   return (
-    <TouchableOpacity style={[styles.button, buttonStyle]} {...props}>
+    <TouchableOpacity
+      {...props}
+      style={[
+        {
+          ...styles.button,
+          borderRadius: rounded ? "100%" : 8,
+          backgroundColor,
+        },
+        buttonStyle,
+      ]}
+    >
       {iconName && iconPosition === "left" && (
         <Ionicons
           name={iconName}
@@ -58,7 +72,6 @@ const Button: React.FC<CustomButtonProps> = ({
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "#007AFF",
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 8,

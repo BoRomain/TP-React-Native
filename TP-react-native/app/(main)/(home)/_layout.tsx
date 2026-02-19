@@ -10,6 +10,12 @@ export default function Layout() {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="[id]"
+        options={{
+          title: "Meal Details",
+        }}
+      />
     </Stack>
   );
 }

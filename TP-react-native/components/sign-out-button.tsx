@@ -20,14 +20,14 @@ export const SignOutButton = () => {
       style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}
       onPress={handleSignOut}
     >
-      <Text style={styles.buttonText}>Sign out</Text>
+      <Text style={styles.buttonText}>Se déconnecter</Text>
     </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "#0a7ea4",
+    backgroundColor: "red",
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 8,
